@@ -17,6 +17,7 @@ RUN apt-get install -qq libboost-date-time1.54-dev \
                         libboost-random1.54-dev
 
 
+RUN git clone https://github.com/OpenMS/contrib.git
 RUN mkdir contrib-build
 
 WORKDIR /contrib-build
