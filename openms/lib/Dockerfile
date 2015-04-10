@@ -1,4 +1,4 @@
-FROM hroest/openms-dependencies 
+FROM hroest/openms_dependencies 
 
 RUN git clone https://github.com/OpenMS/OpenMS.git
 RUN mkdir openms-build
