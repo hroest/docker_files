@@ -28,5 +28,6 @@ RUN cmake -DBUILD_TYPE=SEQAN ../contrib
 RUN cmake -DBUILD_TYPE=WILDMAGIC ../contrib
 RUN cmake -DBUILD_TYPE=EIGEN ../contrib
 RUN cmake -DBUILD_TYPE=COINOR ../contrib
+RUN cmake -DBUILD_TYPE=SQLITE ../contrib
 
 
