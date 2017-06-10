@@ -1,5 +1,6 @@
 FROM ubuntu:14.04
 
+RUN sudo apt-get update
 RUN apt-get install -y g++ autoconf qt4-dev-tools patch libtool make git
 RUN apt-get install -y software-properties-common python-software-properties
 
