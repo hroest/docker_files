@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:16.04
 
 RUN apt-get -y update
 RUN apt-get install -y cmake g++ autoconf qt4-dev-tools patch libtool make git
