@@ -8,6 +8,7 @@ RUN apt-get install -y software-properties-common python-software-properties
 RUN add-apt-repository ppa:george-edison55/cmake-3.x
 RUN sudo apt-get remove -y cmake cmake-data
 RUN sudo -E apt-get update
+RUN apt-get install -y cmake
 
 # install dependencies
 RUN apt-get install -qq libsvm-dev libglpk-dev libzip-dev zlib1g-dev libxerces-c-dev libbz2-dev
