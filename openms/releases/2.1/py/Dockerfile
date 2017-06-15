@@ -1,5 +1,4 @@
-## use local copy of docker lib
-FROM hroest/openms-lib-v2.1.0
+FROM hroest/openms-lib-2.1
 
 WORKDIR /openms-build
 
@@ -14,4 +13,9 @@ RUN cmake -DCMAKE_PREFIX_PATH="/contrib-build/;/usr/;/usr/local" -DBOOST_USE_STA
 # make OpenMS library
 RUN make pyopenms
 
+# install
+WORKDIR /openms-build/pyOpenMS
+RUN python setup.py install
+WORKDIR /
+ENV PATH="/openms-build/bin/:${PATH}"
 
