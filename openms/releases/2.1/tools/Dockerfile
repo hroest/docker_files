@@ -1,5 +1,4 @@
-
-FROM hroest/openms-lib-v2.1.0
+FROM hroest/openms-lib-2.1
 
 WORKDIR /openms-build
 
