@@ -1,7 +1,11 @@
 
-Dockerfile collection
+# Dockerfile collection
 
-=== Example ===
+A collection of dockerfiles to build some interesting projects such as OpenMS.
+The repository contains Dockerfiles to build several releases of OpenMS as well
+as nightly builds.
+
+## Example
 
 Example build of a pyOpenMS container:
 
