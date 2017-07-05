@@ -68,3 +68,5 @@ RUN sudo apt-get -y update && \
          apt-get purge && \
          rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+WORKDIR /
+
