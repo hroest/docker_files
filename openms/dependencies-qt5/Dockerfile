@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 
 # Metadata
 LABEL base.image="openms_dependencies:qt5"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL software="OpenMS (dependencies)"
 LABEL software.version="devel"
 LABEL description="C++ libraries and tools for MS/MS data analysis"
@@ -49,7 +49,7 @@ RUN sudo apt-get -y update && \
 # Install Step 4: Qt5
 RUN add-apt-repository ppa:beineri/opt-qt571-trusty 
 RUN sudo apt-get -y update && \
-         apt-get install -y qt57base qt57webengine qt57svg && \
+         apt-get install -y qt57base qt57webengine qt57svg libgl1-mesa-dev && \
          apt-get clean && \
          apt-get purge && \
          rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
