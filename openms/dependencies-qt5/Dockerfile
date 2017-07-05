@@ -66,3 +66,4 @@ RUN cmake -DBUILD_TYPE=EIGEN ../contrib && rm -rf archives src
 RUN cmake -DBUILD_TYPE=COINOR ../contrib && rm -rf archives src
 RUN cmake -DBUILD_TYPE=SQLITE ../contrib && rm -rf archives src
 
+WORKDIR /
