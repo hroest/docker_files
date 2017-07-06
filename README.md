@@ -11,6 +11,7 @@ There are Docker files available that create a container with all the
 dependencies for OpenMS already pre-compiled: 
 
 - [OpenMS dependencies](openms/dependencies/Dockerfile) 
+- [OpenMS dependencies with Qt5](openms/dependencies-qt5/Dockerfile) 
 
 ## Example
 
