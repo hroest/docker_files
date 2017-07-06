@@ -1,0 +1,55 @@
+bootstrap:docker
+From:ubuntu:14.04
+%post
+# base.image="openms_dependencies:qt5"
+# version="1.1"
+# software="OpenMS (dependencies)"
+# software.version="devel"
+# description="C++ libraries and tools for MS/MS data analysis"
+# website="http://www.openms.org/"
+# documentation="http://www.openms.org/"
+# license="http://www.openms.org/"
+# tags="Proteomics"
+# Hannes Rost <hroest@stanford.edu>
+USER root
+sudo apt-get -y update && \
+         apt-get install -y --no-install-recommends --no-install-suggests g++ autoconf patch libtool make git automake && \
+         apt-get install -y --no-install-recommends --no-install-suggests software-properties-common python-software-properties && \
+         apt-get clean && \
+         apt-get purge && \
+         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+add-apt-repository ppa:george-edison55/cmake-3.x
+sudo apt-get -y update && \
+         apt-get install -y cmake && \
+         apt-get clean && \
+         apt-get purge && \
+         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+sudo apt-get -y update && \
+         apt-get install -y cmake && \
+         apt-get install -y --no-install-recommends --no-install-suggests libsvm-dev libglpk-dev libzip-dev zlib1g-dev libxerces-c-dev libbz2-dev && \
+         apt-get install -y --no-install-recommends --no-install-suggests libboost-date-time1.54-dev \
+                                 libboost-iostreams1.54-dev \
+                                 libboost-regex1.54-dev \
+                                 libboost-math1.54-dev \
+                                 libboost-random1.54-dev && \
+         apt-get clean && \
+         apt-get purge && \
+         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+add-apt-repository ppa:beineri/opt-qt571-trusty 
+sudo apt-get -y update && \
+         apt-get install -y qt57base qt57webengine qt57svg libgl1-mesa-dev && \
+         apt-get clean && \
+         apt-get purge && \
+         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+git clone https://github.com/OpenMS/contrib.git && rm -rf contrib/.git/
+mkdir contrib-build
+cd /contrib-build
+cmake -DBUILD_TYPE=SEQAN ../contrib && rm -rf archives src
+cmake -DBUILD_TYPE=WILDMAGIC ../contrib && rm -rf archives src
+cmake -DBUILD_TYPE=EIGEN ../contrib && rm -rf archives src
+cmake -DBUILD_TYPE=COINOR ../contrib && rm -rf archives src
+cmake -DBUILD_TYPE=SQLITE ../contrib && rm -rf archives src
