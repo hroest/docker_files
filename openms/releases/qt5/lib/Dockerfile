@@ -1,7 +1,7 @@
 FROM hroest/openms_dependencies:qt5-v1.1
 
 WORKDIR /
-RUN git clone https://github.com/OpenMS/OpenMS.git && cd /OpenMS && git checkout feature/qt5 && rm -rf .git
+RUN git clone https://github.com/OpenMS/OpenMS.git && cd /OpenMS && git checkout feature/qt5 && rm -rf .git share/OpenMS/examples/
 
 RUN mkdir openms-build
 WORKDIR /openms-build
