@@ -1,72 +1,56 @@
-FROM ubuntu:14.04
+FROM ubuntu:17.04
 
 # Metadata
 LABEL base.image="openms_dependencies"
 LABEL version="2.0"
 LABEL software="OpenMS (dependencies)"
-LABEL software.version="2.2.0-small"
+LABEL software.version="2.2.0-17.04"
 LABEL description="C++ libraries and tools for MS/MS data analysis"
 LABEL website="http://www.openms.org/"
 LABEL documentation="http://www.openms.org/"
 LABEL license="http://www.openms.org/"
 LABEL tags="Proteomics"
 
-RUN sudo apt-get -y update && \
-         apt-get install -y --no-install-recommends --no-install-suggests g++ autoconf patch libtool make git && \
-         apt-get install -y --no-install-recommends --no-install-suggests software-properties-common python-software-properties && \
-         apt-get clean && \
-         apt-get purge && \
-         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+USER root
 
-# fix to get cmake 3.x in ubuntu 14.04
-RUN add-apt-repository ppa:george-edison55/cmake-3.x
-RUN sudo apt-get -y update && \
-         apt-get install -y cmake && \
-         apt-get clean && \
-         apt-get purge && \
-         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends --no-install-suggests g++ autoconf automake patch libtool make git && \
+    apt-get install -y --no-install-recommends --no-install-suggests software-properties-common python-software-properties && \
+    apt-get clean && apt-get purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install dependencies
-## TODO: --no-install-suggests
-RUN sudo apt-get -y update && \
-         apt-get install -y cmake && \
-         apt-get install -y --no-install-recommends --no-install-suggests libsvm-dev libglpk-dev libzip-dev zlib1g-dev libxerces-c-dev libbz2-dev && \
-         apt-get install -y --no-install-recommends --no-install-suggests libboost-date-time1.54-dev \
-                                 libboost-iostreams1.54-dev \
-                                 libboost-regex1.54-dev \
-                                 libboost-math1.54-dev \
-                                 libboost-random1.54-dev && \
-         apt-get clean && \
-         apt-get purge && \
-         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# install dependencies (cmake is 3.5 in 16.04)
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends --no-install-suggests libsvm-dev libglpk-dev libzip-dev zlib1g-dev \
+                        libxerces-c-dev libbz2-dev cmake && \
+    apt-get clean && apt-get purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/OpenMS/contrib.git && rm -rf contrib/.git/
-RUN mkdir contrib-build
+# install boost (cmake is 3.5 in 16.04)
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends --no-install-suggests libboost-date-time1.62-dev \
+                        libboost-iostreams1.62-dev \
+                        libboost-regex1.62-dev \
+                        libboost-math1.62-dev \
+                        libboost-random1.62-dev && \
+    apt-get clean && apt-get purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# forgot automake ! 
-RUN sudo apt-get -y update && \
-         apt-get install -y --no-install-recommends --no-install-suggests g++ automake && \
-         apt-get clean && \
-         apt-get purge && \
-         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# install specific dependencies
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends --no-install-suggests libwildmagic-dev \
+         coinor-libcoinutils-dev coinor-libcgl-dev coinor-libcbc-dev \
+				 coinor-libclp-dev coinor-libosi-dev coinor-libvol-dev \
+         seqan-dev libeigen3-dev libsqlite3-dev && \
+    apt-get clean && apt-get purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /contrib-build
-
-RUN cmake -DBUILD_TYPE=SEQAN ../contrib && rm -rf archives src
-RUN cmake -DBUILD_TYPE=WILDMAGIC ../contrib && rm -rf archives src
-RUN cmake -DBUILD_TYPE=EIGEN ../contrib && rm -rf archives src
-RUN cmake -DBUILD_TYPE=COINOR ../contrib && rm -rf archives src
-RUN cmake -DBUILD_TYPE=SQLITE ../contrib && rm -rf archives src
-
-# install dependencies
-RUN sudo apt-get -y update && \
-         apt-get install -y cmake && \
-         apt-get install -y --no-install-recommends --no-install-suggests qt4-dev-tools qt4-default qt4-qtconfig qt4-qmake && \
-         apt-get install -y --no-install-recommends --no-install-suggests libqt4-dev libqt4-opengl-dev libqt4-svg && \
-         apt-get install -y --no-install-recommends --no-install-suggests libqt4-webkit libqtwebkit-dev && \
-         apt-get clean && \
-         apt-get purge && \
-         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# install Qt4 dependencies
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends --no-install-suggests qt4-dev-tools qt4-default qt4-qtconfig qt4-qmake && \
+    apt-get install -y --no-install-recommends --no-install-suggests libqt4-dev libqt4-opengl-dev libqt4-svg libqt4-network libqtwebkit-dev && \
+    apt-get clean && apt-get purge && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /
 
