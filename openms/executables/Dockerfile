@@ -1,4 +1,4 @@
-FROM hroest/openms_lib 
+FROM hroest/openms-lib-nightly
 
 WORKDIR /openms-build
 
