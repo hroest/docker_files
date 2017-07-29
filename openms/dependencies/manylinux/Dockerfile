@@ -8,6 +8,9 @@ RUN make
 RUN make install
 WORKDIR /
 
+RUN yum install -y libtool
+RUN yum install -y qt4 qt4-devel qt4-webkit-devel libzip-devel zlib-devel bzip2-devel
+
 RUN git clone https://github.com/OpenMS/contrib.git
 RUN mkdir contrib-build
 

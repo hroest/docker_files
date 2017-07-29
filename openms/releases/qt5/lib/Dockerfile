@@ -1,4 +1,4 @@
-FROM hroest/openms_dependencies:qt5-v1.1
+FROM openms/contrib:qt5-v2.0
 
 WORKDIR /
 RUN git clone https://github.com/OpenMS/OpenMS.git && cd /OpenMS && git checkout feature/qt5 && rm -rf .git share/OpenMS/examples/
