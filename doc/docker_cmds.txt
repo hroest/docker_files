@@ -1,0 +1,212 @@
+
+# view
+sudo docker images
+sudo docker ps
+
+sudo docker pull alpine:latest
+# first: sudo apt-get update 
+sudo docker build .
+
+sudo docker pull biocontainers/tpp:latest
+
+# cleanup!!
+# https://gist.github.com/bastman/5b57ddb3c11942094f8d0a97d461b430
+
+# docker rm $(docker ps -qa --no-trunc --filter "status=exited")
+# docker rmi $(docker images | grep "none.*none" | awk '/ / { print $3 }')
+###################################
+###################################
+
+# interactive shell:
+sudo docker run -it quay.io/pypa/manylinux1_x86_64 /bin/bash
+sudo docker run --net=host -it quay.io/pypa/manylinux1_x86_64 /bin/bash
+sudo docker run -it ubuntu:14.04 /bin/bash
+
+# after exiting the interactive shell (run docker ps -a to see latest container id)
+### docker commit c16378f943fe some_test_commit
+### docker tag some_test_commit hroest/tag1
+
+###################################
+###################################
+# X server
+https://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/25280523#25280523
+
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
+xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
+XCMDS="-e DISPLAY=$DISPLAY -e QT_X11_NO_MITSHM=1  -v $XSOCK:$XSOCK -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -u root"
+sudo docker run -ti $XCMDS biodkr/openms2.2-install-latest TOPPView
+
+
+
+docker run -v /media/data/shared_vm/:/data:rw biocontainers/tpp:latest comet
+docker run -v /media/data/shared_vm/:/data:rw biocontainers/tpp:latest comet -P/data/examples/comet.params.new /data/examples/spectra_comet.mzML
+
+
+docker run -v /media/data/shared_vm/:/data:rw brightspark/wiffconverter:0.7 cat /data/test.txt
+
+
+docker run -v /media/data/shared_vm/:/data:rw brightspark/wiffconverter:0.1 mono /usr/local/bin/sciex/wiffconverter/OneOmics.WiffConverter.exe WIFF 
+docker run -v /media/data/shared_vm/:/data:rw brightspark/wiffconverter:0.7 mono /usr/local/bin/sciex/wiffconverter/OneOmics.WiffConverter.exe WIFF 
+
+
+docker run hroest/openms-executables-nightly:92421bc8da11 cat /data/test.txt
+
+# try this
+
+docker run -v /media/data/shared_vm/:/data:rw brightspark/wiffconverter:0.7 mono /usr/local/bin/sciex/wiffconverter/OneOmics.WiffConverter.exe WIFF /data/testfile.wiff -profile MZML /data/testfile.mzML
+
+
+sudo docker run -v /media/sf_share/MSDataConverter:/data:rw brightspark/wiffconverter:0.1 mono /usr/local/bin/sciex/wiffconverter/OneOmics.WiffConverter.exe WIFF /data/16144_ZL_CDK4_WT_BR1_SWATH_TOF1chp_P36.wiff -profile MZML /data/16144_ZL_CDK4_WT_BR1_SWATH_TOF1chp_P36.wiff.mzml
+
+
+
+run -v /media/data/tmp/schubert_chapter/:/data:rw brightspark/wiffconverter:0.1 mono /usr/local/bin/sciex/wiffconverter/OneOmics.WiffConverter.exe WIFF /data/olgas_K121026_001_SW_Wayne_R1_d00.wiff  -profile MZML /data/olgas_K121026_001_SW_Wayne_R1_d00.wiff.mzML 
+
+## docker DNS issues
+## http://stackoverflow.com/questions/24832972/docker-apt-get-update-fails
+## go to  /etc/default/docker and add 
+# DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4"
+## then restart docker daemon
+
+## # alternatively: 
+## ## nmcli dev show | grep 'IP4.DNS'
+## sudo vi /etc/docker/daemon.json
+## {                                                                          
+##     "dns": ["171.64.1.234", "171.67.1.234"]                                                                           
+## }  
+
+## sudo docker run --net=host busybox ping -c 1 8.8.8.8
+## sudo docker run busybox ping -c 1 8.8.8.8
+
+
+
+# save an image
+
+### docker commit c16378f943fe openms-dependencies
+docker tag 0e5574283393 fedora/httpd:version1.0
+
+# 14.04, contains coinor already
+docker tag ec386d6b79d4 openms-depend/v2.0
+docker tag 116c3f14b594 openms-lib/v2.1.0
+docker tag 78f15ea083f7 openms-tools/v2.1.0
+docker tag 0e1c749b8ef3 openms-python-only/v2.1.0
+docker tag b1cb19f85238 openms-python/v2.1.0           
+
+
+sudo docker tag hroest/openms_dependencies hroest/openms_dependencies:v2.2
+sudo docker push hroest/openms_dependencies:v2.2 
+
+
+# look at images
+docker images
+
+
+
+run openms-python-only/v2.1.0 "cd pyOpenMS && python setup.py install"
+
+sudo docker run -v /tmp/:/data:rw a671ea09db60 python -c "import pyopenms; print pyopenms; ms = pyopenms.MSExperiment(); f= pyopenms.MzMLFile(); f.store('/data/test.mzML', ms)"
+
+sudo docker run -v /tmp/:/data:rw b1cb19f85238 python -c "import pyopenms; print pyopenms; ms = pyopenms.MSExperiment(); f= pyopenms.MzMLFile(); f.store('/data/test.mzML', ms)"
+
+
+
+sudo docker run -v /tmp/:/data:rw hroest/openms-pyopenms-v2.2.0 python -c "import pyopenms; print pyopenms; ms = pyopenms.MSExperiment(); f= pyopenms.MzMLFile(); f.store('/data/test.mzML', ms)"
+
+
+
+
+docker run hroest/openms-lib-nightly:92421bc8da11 cat /data/test.txt
+
+
+
+
+####  Start from scratch
+#### do a run
+
+sudo docker run --net=host ubuntu:14.04 sudo apt-get -y update
+# sudo docker ps -l
+sudo docker commit zen_fermi hroest/step1
+
+sudo docker run --net=host hroest/step1 apt-get install -y g++ autoconf qt4-dev-tools patch libtool make git
+sudo docker commit xxx hroest/ubuntu-tools-qt4
+
+sudo docker run --net=host hroest/step1 apt-get install -y software-properties-common python-software-properties
+sudo docker commit xxx hroest/ubuntu-tools-minimal
+
+sudo docker run --net=host hroest/ubuntu-tools-minimal apt-get install -y g++ autoconf patch libtool make git
+sudo docker commit drunk_mestorf hroest/ubuntu-tools-git
+
+# get cmake (new version)
+sudo docker run --net=host hroest/ubuntu-tools-git /bin/bash -c "add-apt-repository ppa:george-edison55/cmake-3.x && sudo apt-get remove -y cmake cmake-data && sudo -E apt-get update && apt-get install -y cmake"
+sudo docker commit xxx hroest/ubuntu-tools-cmake
+
+sudo docker run --net=host hroest/ubuntu-tools-cmake apt-get install -qq libsvm-dev libglpk-dev libzip-dev zlib1g-dev libxerces-c-dev libbz2-dev \
+                        libboost-date-time1.54-dev libboost-iostreams1.54-dev libboost-regex1.54-dev libboost-math1.54-dev libboost-random1.54-dev
+
+sudo docker commit xxx hroest/ubuntu-tools-boost
+
+sudo docker run --net=host hroest/ubuntu-tools-boost /bin/bash -c "add-apt-repository ppa:beineri/opt-qt571-trusty -y && apt-get update -q && apt-get install qt57-meta-full -y"
+sudo docker commit xxx hroest/ubuntu-tools-qt5
+
+
+# make contrib
+sudo docker run --net=host hroest/ubuntu-tools-boost /bin/bash -c "mkdir contrib-build && git clone https://github.com/OpenMS/contrib.git"
+
+sudo docker run --net=host hroest/ubuntu-tools-contrib-base /bin/bash -c "cd contrib-build && cmake -DBUILD_TYPE=SEQAN ../contrib && cmake -DBUILD_TYPE=WILDMAGIC ../contrib && cmake -DBUILD_TYPE=EIGEN ../contrib && cmake -DBUILD_TYPE=COINOR ../contrib && cmake -DBUILD_TYPE=SQLITE ../contrib"
+
+sudo docker commit xxx hroest/ubuntu-tools-contrib
+
+sudo docker run --net=host hroest/ubuntu-tools-contrib /bin/bash -c "add-apt-repository ppa:beineri/opt-qt571-trusty -y && apt-get update -q && apt-get install qt57-meta-full -y"
+
+## do base only!
+sudo docker run --net=host hroest/ubuntu-tools-contrib /bin/bash -c "add-apt-repository ppa:beineri/opt-qt571-trusty -y && apt-get update -q && apt-get install qt57base -y"
+sudo docker commit dreamy_ritchie hroest/ubuntu-tools-qt5-base
+
+sudo docker run --net=host hroest/ubuntu-tools-qt5-base /bin/bash -c "git clone https://github.com/OpenMS/OpenMS.git"
+sudo docker commit berserk_mirzakhani hroest/ubuntu-openms
+
+sudo docker run --net=host hroest/ubuntu-openms /bin/bash -c "cd OpenMS && git checkout feature/qt5"
+sudo docker commit big_perlman hroest/ubuntu-openms-qt5
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5 /bin/bash -c "apt-get install libgl1-mesa-dev -y"
+sudo docker commit mad_williams hroest/ubuntu-openms-qt5-1
+sudo docker run --net=host hroest/ubuntu-openms-qt5-1 /bin/bash -c "apt-get install qt57svg -y"
+sudo docker commit   backstabbing_gates hroest/ubuntu-openms-qt5-2
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-2 /bin/bash -c "mkdir openms-build && source /opt/qt57/bin/qt57-env.sh && cd /openms-build && cmake -DCMAKE_PREFIX_PATH='/contrib-build/;/usr/;/usr/local' -DBOOST_USE_STATIC=OFF ../OpenMS"
+sudo docker commit admiring_tesla hroest/ubuntu-openms-qt5-configure
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-configure /bin/bash -c "cd openms-build && make OpenMS -j6"
+sudo docker commit focused_khorana hroest/ubuntu-openms-qt5-lib-built
+
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-lib-built /bin/bash -c "cd openms-build && make BaselineFilter"
+
+
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-2 /bin/bash -c "mkdir openms-build && source /opt/qt57/bin/qt57-env.sh && cd /openms-build && cmake -DCMAKE_PREFIX_PATH='/contrib-build/;/usr/;/usr/local' -DCMAKE_BUILD_TYPE=Debug -DBOOST_USE_STATIC=OFF ../OpenMS"
+sudo docker commit mad_bartik hroest/ubuntu-openms-debug-qt5-configure
+
+sudo docker run --net=host hroest/ubuntu-openms-debug-qt5-configure /bin/bash -c "cd openms-build && make OpenMS -j6"
+sudo docker commit infallible_minsky hroest/ubuntu-openms-debug-qt5-lib-built
+
+
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-2 /bin/bash -c "apt-get install clang -y"
+sudo docker commit   cocky_shirley hroest/ubuntu-openms-qt5-3
+
+
+sudo docker run --net=host hroest/ubuntu-openms-qt5-3 /bin/bash -c "export CC=/usr/bin/clang && export CXX=/usr/bin/clang++ && mkdir openms-build && source /opt/qt57/bin/qt57-env.sh && cd /openms-build && cmake -DCMAKE_PREFIX_PATH='/contrib-build/;/usr/;/usr/local' -DCMAKE_BUILD_TYPE=Debug -DBOOST_USE_STATIC=OFF ../OpenMS"
+sudo docker commit trusting_easley hroest/ubuntu-openms-debug-clang-qt5-lib
+
+
+sudo docker run --net=host hroest/ubuntu-openms-debug-clang-qt5-lib /bin/bash -c "cd openms-build && make OpenMS -j6"
+
+
+
+
+
+
+
+
