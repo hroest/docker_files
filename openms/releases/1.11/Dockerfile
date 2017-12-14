@@ -69,3 +69,6 @@ RUN make OpenMSInfo
 RUN make TOPP -j6
 RUN make UTILS -j6
 
+ENV PATH /openms-build/bin/:$PATH
+ENV LD_LIBRARY_PATH /openms-build/lib/:$LD_LIBRARY_PATH
+
