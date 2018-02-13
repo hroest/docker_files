@@ -2,9 +2,9 @@ FROM ubuntu:14.04
 
 # Metadata
 LABEL base.image="openms_dependencies"
-LABEL version="2.0"
+LABEL version="2.3"
 LABEL software="OpenMS (dependencies)"
-LABEL software.version="2.2.0-small"
+LABEL software.version="2.3.1-small"
 LABEL description="C++ libraries and tools for MS/MS data analysis"
 LABEL website="http://www.openms.org/"
 LABEL documentation="http://www.openms.org/"
@@ -55,8 +55,16 @@ WORKDIR /contrib-build
 RUN cmake -DBUILD_TYPE=SEQAN ../contrib && rm -rf archives src
 RUN cmake -DBUILD_TYPE=WILDMAGIC ../contrib && rm -rf archives src
 RUN cmake -DBUILD_TYPE=EIGEN ../contrib && rm -rf archives src
-RUN cmake -DBUILD_TYPE=COINOR ../contrib && rm -rf archives src
 RUN cmake -DBUILD_TYPE=SQLITE ../contrib && rm -rf archives src
+
+# install dependencies
+RUN sudo apt-get -y update && \
+         apt-get install -y cmake && \
+         apt-get install -y --no-install-recommends --no-install-suggests coinor-cbc coinor-libcgl1 coinor-libclp1 coinor-libcoinutils-dev coinor-libcgl-dev && \
+         apt-get install -y --no-install-recommends --no-install-suggests coinor-libcbc-dev coinor-libclp-dev coinor-libosi-dev coinor-libvol-dev && \
+         apt-get clean && \
+         apt-get purge && \
+         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install dependencies
 RUN sudo apt-get -y update && \

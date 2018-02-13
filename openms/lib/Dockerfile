@@ -1,4 +1,4 @@
-FROM hroest/openms_dependencies:v2.2.0-small
+FROM hroest/openms_dependencies:v2.3.1-small
 
 WORKDIR /
 RUN git clone https://github.com/OpenMS/OpenMS.git && cd OpenMS && \
