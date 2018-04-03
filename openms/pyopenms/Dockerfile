@@ -17,5 +17,5 @@ WORKDIR /openms-build
 # Load the Qt5 environment and configure
 RUN QT_ENV=$(find /opt -name 'qt*-env.sh') && /bin/bash -c "source ${QT_ENV} && cmake -DCMAKE_PREFIX_PATH='/contrib-build/;/usr/;/usr/local' -DBOOST_USE_STATIC=OFF -DPYOPENMS=On ../OpenMS"
 RUN make -j6 pyopenms
-RUN ctest -j6 pyopenms
+RUN ctest -j6 -R pyopenms
 
