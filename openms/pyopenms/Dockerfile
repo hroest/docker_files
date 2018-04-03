@@ -10,6 +10,7 @@ ARG repo
 ARG branch
 
 RUN git clone -b $branch https://github.com/$repo.git && rm -rf OpenMS/.git/
+RUN sed -i 's#2> /dev/null##' OpenMS/src/pyOpenMS/CMakeLists.txt
 
 RUN mkdir /openms-build
 WORKDIR /openms-build
