@@ -58,3 +58,20 @@ RUN ln -s /contrib-build/lib64/libxerces-c-3.2.a /contrib-build/lib64/libxerces-
 
 ## this is hroest/manylinux_qt59_contrib
 
+# OpenSSL 1.1 is too modern...
+RUN wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz && \
+    tar xzvf openssl-*.tar.gz  && \
+    cd openssl-* && \
+    ./config -fpic shared --prefix=/usr --openssldir=/usr && make && make install && \
+    rm -rf /openssl*
+
+RUN wget http://files.directadmin.com/services/wget-1.8.2.tar.gz && \
+  tar xvzf wget-1.8.2.tar.gz && \
+  cd wget-1.8.2 && \
+  ./configure --prefix=/usr --with-ssl && \
+  make && \
+  make install && \
+  rm -rf /wget*
+
+## this is hroest/manylinux_qt59_contrib:v2
+
