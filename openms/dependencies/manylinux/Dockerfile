@@ -34,49 +34,4 @@ RUN git clone https://github.com/OpenMS/contrib.git && \
 
 WORKDIR /
 
-# /usr/lib64/qt4/bin/qmake
-
 ## this is manylinux_qt_contrib
-git clone -b Release2.2.0 https://github.com/OpenMS/OpenMS.git
-# git clone https://github.com/OpenMS/OpenMS.git && rm -rf OpenMS/.git/ OpenMS/share/OpenMS/examples/
-RUN mkdir openms-build
-
-WORKDIR /openms-build
-
-for PYBIN in /opt/python/cp27*; do
-echo $PYBIN
-done
-
-for PYBIN in /opt/python/cp27*; do
-"$PYBIN/bin/pip" install -U Cython
-"$PYBIN/bin/pip" install -U setuptools
-"$PYBIN/bin/pip" install -U wheel
-"$PYBIN/bin/pip" install -U numpy
-"$PYBIN/bin/pip" install -U nose
-"$PYBIN/bin/pip" install -U autowrap
-done
-
-export PYVER=`basename $PYBIN`
-mkdir openms-build-$PYVER
-cd openms-build-$PYVER
-
-cmake -DCMAKE_PREFIX_PATH="/contrib-build/;/usr/;/usr/local" -DPYOPENMS=On -DPYTHON_EXECUTABLE:FILEPATH=$PYBIN/bin/python -DQT_QMAKE_EXECUTABLE=/qt/bin/qmake ../OpenMS
-make -j6 pyopenms
-
-
-# upload stuff ... 
-cd pyOpenMS
-"$PYBIN/bin/pip" wheel . -w wheelhouse_tmp
-for whl in wheelhouse_tmp/pyopenms*.whl; do
-  auditwheel repair "$whl" -w wheelhouse/
-done
-
-# mv wheelhouse /data/
-
-
-
-
-
-RUN cmake -DCMAKE_PREFIX_PATH="/contrib-build/;/usr/;/usr/local" -DPYOPENMS=On -DQT_QMAKE_EXECUTABLE=/usr/lib64/qt4/bin/qmake ../OpenMS
-RUN make OpenMS
-
