@@ -1,18 +1,24 @@
 FROM quay.io/pypa/manylinux1_x86_64
 
 # OpenSSL 1.1 is too modern...
-# RUN wget https://www.openssl.org/source/openssl-1.1.0g.tar.gz
-RUN wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz && \
+RUN curl -L -o openssl-1.tar.gz https://www.openssl.org/source/openssl-1.0.2n.tar.gz && \
     tar xzvf openssl-*.tar.gz  && \
     cd openssl-* && \
     ./config -fpic shared --prefix=/usr --openssldir=/usr && make && make install && \
     rm -rf /openssl*
 
+RUN curl -L -o wget-1.8.2.tar.gz http://files.directadmin.com/services/wget-1.8.2.tar.gz && \
+  tar xvzf wget-1.8.2.tar.gz && \
+  cd wget-1.8.2 && \
+  ./configure --prefix=/usr --with-ssl && \
+  make && \
+  make install && \
+  rm -rf /wget*
+
 # ##### See instructions at https://kate-editor.org/2014/12/22/qt-5-4-on-red-hat-enterprise-5/
 # ##### patch qbenchmark: no perf events => patch that out, won't compile, at least not for me because of missing syscall/broken kernel header
 # ##### configure with some defines to work on centos 5 (fake some defines)
 # ##### qtgamepad has some issues with undefined BTN_TRIGGER_HAPPY, either remove it or try the solution at http://lists.qt-project.org/pipermail/development/2017-March/029188.html 
-# RUN yum install -y xz openssl-devel
 RUN yum install -y xz 
 RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.4/single/qt-everywhere-opensource-src-5.9.4.tar.xz && \
     xz -d qt-everywhere-opensource-src-5.*.tar.xz  && \
