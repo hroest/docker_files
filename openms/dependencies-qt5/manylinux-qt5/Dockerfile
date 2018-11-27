@@ -27,7 +27,7 @@ RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.4/single/qt-everywhe
     sed -i "s/#define QTESTLIB_USE_PERF_EVENTS/#undef QTESTLIB_USE_PERF_EVENTS/g" qtbase/src/testlib/qbenchmark_p.h && \
     ./configure -openssl -opensource -nomake examples -nomake tests -opengl desktop -confirm-license -prefix /qt \
       -D _X_INLINE=inline -D XK_dead_currency=0xfe6f -D XK_ISO_Level5_Lock=0xfe13 -D FC_WEIGHT_EXTRABLACK=215 -D FC_WEIGHT_ULTRABLACK=FC_WEIGHT_EXTRABLACK -D GLX_GLXEXT_PROTOTYPES=On \
-      -skip activeqt -skip androidextras -skip connectivity -skip enginio -skip location -skip macextras -skip multimedia -skip quick1 -skip sensors -skip serialport \
+      -skip activeqt -skip androidextras -skip connectivity -skip enginio -skip location -skip macextras -skip multimedia -skip sensors -skip serialport \
       -skip wayland -skip webchannel -skip websockets -skip winextras -skip x11extras -skip qtgamepad && \
     make && \
     make install && \
@@ -36,7 +36,9 @@ RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.4/single/qt-everywhe
 
 ## this is hroest/manylinux_qt59:v1.1
 
-RUN wget --no-check-certificate http://cmake.org/files/v3.9/cmake-3.9.0.tar.gz && \
+## this is hroest/manylinux_qt59:v3
+
+RUN wget http://cmake.org/files/v3.9/cmake-3.9.0.tar.gz && \
     tar xzvf cmake-3.9.0.tar.gz && \
     cd /cmake-3.9.0 && \
     ./bootstrap && \
@@ -59,9 +61,6 @@ RUN git clone https://github.com/OpenMS/contrib.git && \
 
 WORKDIR /
 
-# small bugfix
-RUN ln -s /contrib-build/lib64/libxerces-c-3.2.a /contrib-build/lib64/libxerces-c.a
-
-## this is hroest/manylinux_qt59_contrib
+## this is hroest/manylinux_qt59_contrib:v3
 
 
