@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 
 # Metadata
 LABEL base.image="openms_dependencies:qt5"
-LABEL version="1.1"
+LABEL version="1.2"
 LABEL software="OpenMS (dependencies)"
 LABEL software.version="devel"
 LABEL description="C++ libraries and tools for MS/MS data analysis"
@@ -37,6 +37,7 @@ RUN sudo apt-get -y update && \
 RUN sudo apt-get -y update && \
          apt-get install -y cmake && \
          apt-get install -y --no-install-recommends --no-install-suggests libsvm-dev libglpk-dev libzip-dev zlib1g-dev libxerces-c-dev libbz2-dev && \
+         apt-get install -y --no-install-recommends --no-install-suggests libhdf5-dev && \
          apt-get install -y --no-install-recommends --no-install-suggests libboost-date-time1.54-dev \
                                  libboost-iostreams1.54-dev \
                                  libboost-regex1.54-dev \
