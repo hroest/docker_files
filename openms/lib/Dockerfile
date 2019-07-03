@@ -1,4 +1,4 @@
-FROM openms/contrib:qt5-v2.3.1
+FROM openms/contrib:qt5-v2.5.0
 
 WORKDIR /
 RUN git clone https://github.com/OpenMS/OpenMS.git && cd OpenMS && \
