@@ -34,24 +34,24 @@ RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.4/single/qt-everywhe
     cd / && \
     rm -rf qt-everywhere*src-5.*
 
-## this is hroest/manylinux_qt59:v1.1
-
 ## this is hroest/manylinux_qt59:v3
 
-RUN wget http://cmake.org/files/v3.9/cmake-3.9.0.tar.gz && \
-    tar xzvf cmake-3.9.0.tar.gz && \
-    cd /cmake-3.9.0 && \
+RUN yum install -y libtool
+RUN yum install -y libzip-devel zlib-devel bzip2-devel
+
+RUN wget http://cmake.org/files/v3.10/cmake-3.10.0.tar.gz && \
+    tar xzvf cmake-3.10.0.tar.gz && \
+    cd /cmake-3.10.0 && \
     ./bootstrap && \
     make && \
     make install && \
     cd / && \
     rm -rf /cmake-*
 
-RUN yum install -y libtool
-RUN yum install -y libzip-devel zlib-devel bzip2-devel
 
 # install contrib
 RUN git clone https://github.com/OpenMS/contrib.git && \
+    cd contrib && git checkout 0022e80d2ce7660a795a7131a56ed3 && cd .. && \
     mkdir contrib-build && \
     cd /contrib-build && \
     cmake -DBUILD_TYPE=ALL ../contrib && \
@@ -61,6 +61,9 @@ RUN git clone https://github.com/OpenMS/contrib.git && \
 
 WORKDIR /
 
-## this is hroest/manylinux_qt59_contrib:v3
+## this is hroest/manylinux_qt59_contrib:v4.1
 
+# -------------------------------------------
+# manually install cmake3.10 && compile HDF5:
+# -> this is hroest/manylinux_qt59_contrib:v3.2
 
