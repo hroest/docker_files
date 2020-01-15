@@ -32,21 +32,11 @@ RUN wget http://download.qt.io/official_releases/qt/5.9/5.9.4/single/qt-everywhe
     cd /qt-everywhere*src-5.* && \
     sed -i "s/#define QTESTLIB_USE_PERF_EVENTS/#undef QTESTLIB_USE_PERF_EVENTS/g" qtbase/src/testlib/qbenchmark_p.h && \
     ./configure -openssl -opensource -nomake examples -nomake tests -opengl desktop -confirm-license -prefix /qt \
-      -D _X_INLINE=inline -D XK_dead_currency=0xfe6f -D XK_ISO_Level5_Lock=0xfe13 -D FC_WEIGHT_EXTRABLACK=215 -D FC_WEIGHT_ULTRABLACK=FC_WEIGHT_EXTRABLACK -D GLX_GLXEXT_PROTOTYPES=On \
-      -skip activeqt -skip androidextras -skip connectivity -skip enginio -skip location -skip macextras -skip multimedia -skip sensors -skip serialport \
-      -skip wayland -skip webchannel -skip websockets -skip winextras -skip x11extras -skip qtgamepad && \
+      -D _X_INLINE=inline -D XK_dead_currency=0xfe6f -D XK_ISO_Level5_Lock=0xfe13 -D FC_WEIGHT_EXTRABLACK=215 -D FC_WEIGHT_ULTRABLACK=FC_WEIGHT_EXTRABLACK -D GLX_GLXEXT_PROTOTYPES=On -skip qtgamepad -skip quick1 && \
     make && \
     make install && \
     cd / && \
     rm -rf qt-everywhere*src-5.*
-
-## some more features to drop:
-## https://forum.qt.io/topic/76649/qt-build-options-to-skip-few-modules-through-configuration-file/9
-# configure.bat -static -release -platform win32-g++ -no-opengl -prefix "C:\Qt\Qt5.8.0_MinGW_static" -opensource -confirm-license -make libs -nomake tools -nomake examples -nomake tests \
-# -skip qt3d -skip qtandroidextras -skip qtcanvas3d -skip qtcharts -skip qtconnectivity -skip qtdatavis3d -skip qtdeclarative -skip qtdoc -skip qtgamepad -skip qtgraphicaleffects -skip qtimageformats -skip qtlocation -skip qtmacextras -skip qtmultimedia -skip qtnetworkauth -skip qtpurchasing -skip qtquickcontrols -skip qtquickcontrols2 -skip qtscript -skip qtscxml -skip qtsensors -skip qtserialbus -skip qtserialport -skip qtspeech -skip qtsvg -skip qttools -skip qttranslations -skip qtvirtualkeyboard -skip qtwayland -skip qtwebchannel -skip qtwebengine -skip qtwebsockets -skip qtwebview -skip qtwinextras -skip qtx11extras -skip qtxmlpatterns 
-# -no-feature-texthtmlparser -no-feature-textodfwriter -no-feature-concurrent -no-feature-effects -no-feature-sharedmemory -no-feature-systemsemaphore -no-feature-im -no-feature-process -no-feature-dom -no-feature-filesystemmodel -no-feature-filesystemwatcher -no-feature-graphicsview -no-feature-graphicseffect -no-feature-sizegrip -no-feature-calendarwidget -no-feature-printpreviewwidget -no-feature-keysequenceedit -no-feature-colordialog -no-feature-filedialog -no-feature-fontdialog -no-feature-printpreviewdialog -no-feature-progressdialog -no-feature-inputdialog -no-feature-errormessage -no-feature-wizard -no-feature-datawidgetmapper -no-feature-imageformat_bmp -no-feature-imageformat_ppm -no-feature-imageformat_xbm -no-feature-imageformat_png -no-feature-imageformat_jpeg -no-feature-image_heuristic_mask -no-feature-image_text -no-feature-colornames -no-feature-cups -no-feature-paint_debug -no-feature-freetype -no-feature-translation -no-feature-codecs -no-feature-big_codecs -no-feature-iconv -no-feature-ftp -no-feature-udpsocket -no-feature-networkproxy -no-feature-socks5 -no-feature-networkdiskcache -no-feature-bearermanagement -no-feature-completer -no-feature-fscompleter -no-feature-desktopservices -no-feature-mimetype -no-feature-systemtrayicon -no-feature-undocommand -no-feature-undostack -no-feature-undogroup -no-feature-undoview -no-feature-statemachine -no-feature-gestures -no-feature-dbus"
-
-## this is hroest/manylinux2010_qt59:v1
 
 RUN wget http://cmake.org/files/v3.14/cmake-3.14.0.tar.gz && \
     tar xzvf cmake-3.14.0.tar.gz && \
@@ -70,8 +60,6 @@ RUN git clone https://github.com/OpenMS/contrib.git && \
     rm -rf contrib
 
 WORKDIR /
-
-## this is hroest/manylinux2010_qt59_contrib:v1
 
 # Metadata
 LABEL base.image="manylinux2010_x86_64"
